@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>変更</title>
+    <style>
+        hr.style1 {
+            background-image: linear-gradient(90deg, blue, transparent);
+            border: 0;
+            height: 3px;
+        }
+        hr.style2{
+            height: 3px;
+            border: 0;
+            background-color: blue;
+        }
+        textarea{
+            width: 800px;
+            height: 50px;
+            resize: none;
+            overflow-y: scroll;
+        }
+        .mylabel{
+            background-color: #0362ff;
+            color: white;
+            width: 160px;
+        }
+    </style>
+    <script type="text/javascript">
+        function reset_blank(){
+            document.getElementById("id_start_date").innerText = "";
+            document.getElementById("id_project_no").innerText = "";
+            document.getElementById("id_project_name").innerText = "";
+            document.getElementById("id_protype_code").options[0].selected = true;
+            document.getElementById("id_language_code").options[0].selected = true;
+            document.getElementById("id_summary").innerText = "";
+            document.getElementById("id_status_code").options[0].selected = true;
+            document.getElementById("id_customer").innerText = "";
+            document.getElementById("id_charge").innerText = "";
+            document.getElementById("id_reviewer").innerText = "";
+            document.getElementById("id_release_date").innerText = "";
+            document.getElementById("id_remarks").innerText = "";
+        }
+    </script>
+</head>
+<body>
+    <br>
+    <hr class="style1">
+    <table>
+        <tr>
+            <td width = "100%"><b style="color:blue;">Welcome to 【IT戦略コンサルティング部　企画課】案件管理ボータル</b></td>
+            <td><input type="button" value="戻る" onClick="location.href='/list'" style="background-color:#0362ff;color:white;WIDTH: 100px; HEIGHT: 30px"></td>
+        </tr>
+    </table>
+    <hr class="style1">
+    <br>
+    <br>
+    <font size = "5pt" color = "blue"><b>変更</b></font>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<b>必要事項を入力し登録を行ってください</b>
+    <hr class="style2">
+    <br>
+    <div style="color: red" th:utext="${message}">
+    </div>
+    <form th:action ="'/change/' + ${project.get('project_id')}" method="post">
+    <fieldset style="border: 1px solid #000000; padding: 10px;-webkit-border-radius: 5px;border-color: gainsboro;width: 1100px">
+    <legend><b>既存明細変更</b></legend>
+        <table style="table-layout: fixed">
+            <tr>
+                <td class ="mylabel">発生日</td><td><input type="text" name="start_date" id="id_start_date" maxlength="10" th:value="${#dates.format(project.get('start_date'),'yyyy/MM/dd')}" disabled="disabled" /></td>
+            </tr>
+            <tr>
+                <td class ="mylabel">案件番号</td>
+                <td>
+                    <input type="text" name="project_no" id="id_project_no" maxlength="15" th:value="${project.get('project_no')}" disabled="disabled" />
+                </td>
+            </tr>
+            <tr>
+                <td class ="mylabel">案件名</td><td><input type="text" name="project_name" id="id_project_name" maxlength="30" th:value="${project.get('project_name')}" disabled="disabled" /></td>
+            </tr>
+            <tr>
+                <td class ="mylabel">工程区分</td>
+                <td>
+                    <select name="protype_code" id="id_protype_code" disabled="disabled">
+                        <option value=""></option>
+                        <option th:each="item : ${projecttypeItems}" th:value="${item.key}" th:text="${item.value}" th:selected="${item.key == project.get('protype_code')}">protype_code</option>
+                    </select>
+                </td>
+            </tr>
+            <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+            <tr>
+                <td class ="mylabel">開発言語</td>
+                <td>
+                    <select name="language_code" id="id_language_code">
+                        <option value=""></option>
+                        <option th:each="item : ${languageItems}" th:value="${item.key}" th:text="${item.value}" th:selected="${item.key == project.get('language_code')}">language_code</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class ="mylabel">概要</td><td><textarea name="summary" cols="40" rows="10" maxlength="255" id="id_summary" th:text="${project.get('summary')}"></textarea></td>
+            </tr>
+            <tr>
+                <td class ="mylabel">状態</td>
+                <td>
+                    <select name="status_code" id="id_status_code">
+                        <option value=""></option>
+                        <option th:each="item : ${statusItems}" th:value="${item.key}" th:text="${item.value}" th:selected="${item.key == project.get('status_code')}">status_code</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class ="mylabel">お客様担当者</td><td><input type="text" name="customer" id="id_customer" maxlength="20" th:value="${project.get('customer')}" /></td>
+            </tr>
+            <tr>
+                <td class ="mylabel">担当者</td><td><input type="text" name="charge" id="id_charge" maxlength="20" th:value="${project.get('charge')}" /></td>
+            </tr>
+            <tr>
+                <td class ="mylabel">レビュー者</td><td><input type="text" name="reviewer" id="id_reviewer" maxlength="20" th:value="${project.get('reviewer')}" /></td>
+            </tr>
+            <tr>
+                <td class ="mylabel">リリース日</td><td><input type="text" name="release_date" id="id_release_date" maxlength="10" th:value="${#dates.format(project.get('release_date'),'yyyy/MM/dd')}" /></td>
+            </tr>
+            <tr>
+                <td class ="mylabel">備考</td><td><textarea name="remarks" cols="40" rows="10" maxlength="255" id="id_remarks" th:text="${project.get('remarks')}"></textarea></td>
+            </tr>
+        </table></fieldset>
+    <table><tr></tr></table>
+    <table style="width: 100%;height: 40px;background-color:#0362ff;">
+        <tr>
+            <td align ="center"><input type="submit" value="変更" onClick="" style="WIDTH: 110px; HEIGHT: 30px;"></td>
+        </tr>
+    </table>
+    </form>
+    <br>
+</body>
+</html>

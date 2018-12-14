@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>一覧</title>
+    <style>
+        hr.style1 {
+            background-image: linear-gradient(90deg, blue, transparent);
+            border: 0;
+            height: 3px;
+        }
+        hr.style2{
+            height: 3px;
+            border: 0;
+            background-color: blue;
+        }
+        @media print {
+            .hidden-print {
+            display: none;
+            }
+        .content-print{
+            top:0 !IMPORTANT;
+            left:0 !IMPORTANT;
+            width:172mm !IMPORTANT;
+            height:251mm !IMPORTANT;
+            }
+        }
+        textarea{
+            width: 97%;
+            height: 50px;
+            resize: none;
+            overflow-y: scroll;
+        }
+        .mylabel{
+            background-color: #0362ff;
+            color: white;
+
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <hr class="style1">
+    <table>
+        <tr>
+            <td width = "100%"><b style="color:blue;">Welcome to 【IT戦略コンサルティング部　企画課】案件管理ボータル</b></td>
+            <td><input type="button" value="戻る" onClick="location.href='/menu'" style="background-color:#0362ff;color:white;WIDTH: 100px; HEIGHT: 30px"></td>
+        </tr>
+    </table>
+    <hr class="style1">
+    <br>
+    <br>
+    <font size = "5pt" color = "blue"><b>一覧</b></font>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<b>登録済の明細一覧です</b>
+    <hr class="style2">
+    明細を削除する場合は＜削除＞ボタンをクリックしてください
+    <hr width="80%" align="left" style="height: 2px;border: 0;background-color:black">
+    <br>
+    
+       <div style="color: red;font-weight: bold;" th:if="${message} != ''" th:text="${message}" >
+       </div> 
+        
+        <table width="100%" border="1" style="text-align: center" th:unless="${message} != ''">
+            <tr>
+                <td class ="mylabel" rowspan="2" width="5%">No.</td><td class ="mylabel" width="12%">発生日</td><td class ="mylabel" width="12%">案件番号</td>
+                <td class ="mylabel" width="12%">案件名</td><td  class ="mylabel" width="12%">工程区分</td><td class ="mylabel" width="12%">状態</td><td class ="mylabel" width="30%">概要</td><td class ="mylabel" width="5%">削除</td>
+            </tr>
+            <tr>
+                <td class ="mylabel">リリース日</td><td class ="mylabel">開発言語</td><td class ="mylabel">お客様担当者</td><td class ="mylabel">担当者</td>
+                <td class ="mylabel">レビュー者</td><td class ="mylabel">備考</td><td class ="mylabel">変更</td>
+            </tr>
+                
+            <div th:each="project : ${projects}">
+            <tr>
+                <td rowspan="2" th:text="${project.get('project_id')}"></td><td th:text="${#dates.format(project.get('start_date'),'yyyy年M月d日')}"></td><td th:text="${project.get('project_no')}"></td>
+                <td th:text="${project.get('project_name')}"></td><td th:text="${project.get('protype_code')}"></td>
+                <td th:text="${project.get('status_code')}"></td><td><textarea th:text="${project.get('summary')}"></textarea></td>
+                <td><input type="button" value="削除" class="hidden-print" name="button" th:onclick="'if(window.confirm(\'削除します。よろしいですか？\')){
+                															location.href = \'/delete/' + ${project.get('project_id_num')} + '\';
+	                                                                    }'"></td>
+            </tr>
+            <tr>
+                <td th:text="${#dates.format(project.get('release_date'),'yyyy年M月d日')}"></td><td th:text="${project.get('language_code')}"></td><td th:text="${project.get('customer')}"></td><td th:text="${project.get('charge')}"></td>
+                <td th:text="${project.get('reviewer')}"></td><td><textarea th:text="${project.get('remarks')}"></textarea></td>
+                <td>
+                <input type="submit" value="変更" class="hidden-print" name="button" th:onclick="'location.href = \'/change/' + ${project.get('project_id_num')} + '\''">
+                </td>
+        	</tr>
+        	</div>
+        </table>
+        
+        
+    <br>
+
+</body>
+</html>
